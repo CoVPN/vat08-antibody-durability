@@ -35,7 +35,7 @@ markers <- c("bindSpike", "bindSpike_beta", "bindSpike_alpha", "bindSpike_gamma"
 
 modelsFitted <- data.frame()
 
-nk = 6
+nk = 1000
 set.seed(2)
 runBootPar = TRUE
 

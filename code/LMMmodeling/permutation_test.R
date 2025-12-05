@@ -34,7 +34,7 @@ markers <- c("bindSpike", "bindSpike_beta", "bindSpike_alpha", "bindSpike_gamma"
 
 
 #permutation test
-nk = 6
+nk = 1000
 p_value_Female <- matrix(NA, nrow = dim(contrasts)[1], ncol = length(markers)*3)
 p_value_Male <- matrix(NA, nrow = dim(contrasts)[1], ncol = length(markers)*3)
 
