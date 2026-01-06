@@ -10,36 +10,6 @@ Durability of Neutralizing and Anti-Spike Binding IgG Antibody Responses to Mono
   
   Main programs as well as specific R packages and R files required by each program are listed below.
 
-* `code/data_proc.R`: generates data after imputating missing values; use longitudinal antibody data to detect asymptomatic infections,
-and produce datasets after applying measurement censoring due to SARS-CoV-2 infections  
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + common.R 
-    
-* `code/desc/descFig1.R`: generates boxplots of Day 1 antibody levels for Non-naive participants and pairwise Pearson correlation plots for selected markers   
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + common.R 
-    + descFig1Utils.R
-    
-* `code/desc/descFig2.R`: generates antibody trajectory plots before and after SARS-CoV-2 infections and scatterplots of antibody levels across study visits
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + common.R 
-     + descFig2Utils.R
-    
-* `code/desc/descTable.R`: generates tables showing the number of participants with antibody data in the longitudinal sub-cohort before and after measurement censoring due to infections; 
-and tables summarizing the percentage of samples with missing markers
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + common.R 
-    
-* `code/desc/foldRise_confirmedInfections.R`: generates tables summarizing antibody fold-increases and percentage of seroconversion using antibody level data 
-before and after virologically confirmed infections
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + common.R 
-
 * `code/LMMmodeling/confidenceInt.R`: computes bootstrap confidence intervals for Day 43 Geometric mean, durability, and D202-to-D43 Geometric mean ratio, as 
 well as ratios of these metrics for comparisons such as vaccine vs. placebo, Nonnaive vs. naive, Stage 2 vs. Stage 1.
     + tidyverse 2.0.0 
@@ -83,7 +53,7 @@ well as ratios of these metrics for comparisons such as vaccine vs. placebo, Non
 * Clone this repository.
   
 ### 3. User Instructions
-  Input datasets include `COVID_Sanofi_stage1_20250312.csv`, `COVID_Sanofi_stage2_20250312.csv`, and `longitudinalSubcohortPtid.csv`. 
+  Input datasets include `vat08_combined_data_processed_longitudinal_bAb.csv`, `vat08_combined_data_processed_longitudinal_nAb.csv`. 
   Place these datasets in the `data` subfolder within the cloned repository. 
   
   Create a new R project for the cloned repository. From the command line, starting in the `code` directory, run the following commands. 

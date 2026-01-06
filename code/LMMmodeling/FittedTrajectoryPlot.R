@@ -1,5 +1,5 @@
 rm(list=ls(all=TRUE))
-here::i_am("Readme.txt")
+here::i_am("README.md")
 repoDir <- here::here()
 datDir <- file.path(repoDir,"data")
 codeDir <- file.path(repoDir, "code")
@@ -18,8 +18,7 @@ bAbdata <- read.csv(file.path(datDir, "vat08_combined_data_processed_longitudina
 
 plotFitted = TRUE
 
-markers <- c("bindSpike", "bindSpike_beta", "bindSpike_alpha", "bindSpike_gamma", "bindSpike_delta1", "bindSpike_delta2", "bindSpike_delta3", "bindSpike_omicron",
-             "pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")
+markers <- c("bindSpike", "bindSpike_omicron", "pseudoneutid50", "pseudoneutid50_BA.4.5")
 
 
 
@@ -52,7 +51,7 @@ for(g in 1:dim(groups)[1]){
   
   
   for(marker in markers){
-    if(marker %in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")){
+    if(marker %in% c("pseudoneutid50",  "pseudoneutid50_BA.4.5")){
       lmmdata <- nAbdatag 
     }else{
       lmmdata <- bAbdatag 
@@ -127,7 +126,6 @@ df2pool$markerlabel <- factor(df2pool$markerlabel, levels = c("bAb-IgG Spike Ref
                                                               "nAb-ID50 Reference", "nAb-ID50 Beta", "nAb-ID50 Omicron-BA.1", 
                                                               "nAb-ID50 Omicron-BA.2", "nAb-ID50 Omicron-BA.4/BA.5"))
 
-mainmarkers <- c("bAb-IgG Spike Reference","nAb-ID50 Reference", "bAb-IgG Spike Omicron-B.1.1.529","nAb-ID50 Omicron-BA.4/BA.5" )
 
 library(scales)
 scientific_10 <- function(x) {
@@ -140,95 +138,92 @@ scientific_10 <- function(x) {
 
 #plot the trajectories for each group and marker
 for(markeri in markers){
-  if(markeri %in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")){
+  if(markeri %in% c("pseudoneutid50", "pseudoneutid50_BA.4.5")){
     ylim <- c(1.25, 5.5)
   }else{
     ylim <- c(2.3, 6.1)
   }
   LLOQmarker <- LLOQf (markeri)
   for(s in c(1, 2)){
-    for(bs in c("Naive", "Non-naive","Non-naive Group A","Non-naive Group B" )){
-      df1pooli <- filter(df1pool, stage == s & Bgroup == bs & marker == markeri)
-      df2pooli <- filter(df2pool, stage == s & Bgroup == bs & marker == markeri)
-      if(dim(df1pooli)[1] > 0){
-        if(plotFitted){
-          vlabel <- ifelse(s == 1, "Non-naïve MV", "Non-naïve BV")
-          plabel <- ifelse(s == 1, "Stage 1 Non-naïve Placebo", "Stage 2 Non-naïve Placebo")
-          p1 <- ggplot() +
-            geom_point(data = df1pooli, aes(x = plottime, y = mean, color = treatment), size = 5) +
-            geom_errorbar(data = df1pooli, aes(x = plottime, ymin =low, ymax = high, color = treatment), linewidth = 1.7, width = 10) +
-            geom_line(aes(x = time, y = Female, color = treatment), data = df2pooli, linewidth = 1.5) +
-            scale_y_continuous(limits = ylim, 
-                               breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
-                               labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-            #facet_wrap(vars(markerlabel)) + 
-            scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
-                               expand = expansion(0, 0), 
-                               labels = c("43", "78", "134", "202", "292", "387" )) +
-            geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
-            annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", 
-                                                                                             "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) + 
-            theme_bw()+
-            ylab(plot_labf(markeri)) +
-            xlab("Days since Enrollment")+
-            scale_color_manual(breaks = c("Vaccine", "Placebo"), 
-                               values = c( "darkorange", "#619CFF"), labels = c(vlabel, plabel)) +
-            #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
-            theme(legend.title = element_blank(),
-                  plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-                  legend.direction = "vertical",
-                  legend.key.width=unit(1,"cm"),
-                  legend.text = element_text (size = 22),
-                  legend.position = c(0.6, 0.93),
-                  legend.background = element_rect(fill = NA),
-                  title = element_text(size = 23),
-                  strip.text.y =  element_text (size = 9),
-                  strip.text.x =  element_text (size = 9),
-                  axis.title.x =  element_text (size = 24, vjust = -0.8),
-                  axis.title.y =  element_text (size = 24),
-                  axis.text.x =  element_text (size = 23,  vjust = 0.5),
-                  axis.text.y =  element_text (size = 23))
-        }else{
-          p1 <- ggplot() +
-            geom_point(data = df1pooli, aes(x = plottime, y = mean, color = treatment), size = 5) +
-            geom_errorbar(data = df1pooli, aes(x = plottime, ymin =low, ymax = high, color = treatment), linewidth = 1.7, width = 10) +
-            scale_y_continuous(limits = ylim, 
-                               breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
-                               labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-            #facet_wrap(vars(markerlabel)) + 
-            scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
-                               expand = expansion(0, 0), 
-                               labels = c("43", "78", "134", "202", "292", "387" )) +
-            geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
-            annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", 
-                                                                                             "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) + 
-            theme_bw()+
-            ylab(plot_labf(markeri)) +
-            xlab("Days since Enrollment")+
-            scale_color_manual(breaks = c("Vaccine", "Placebo"), 
-                               values = c( "darkorange", "#619CFF")) +
-            #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
-            theme(legend.title = element_blank(),
-                  plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-                  legend.direction = "vertical",
-                  legend.key.width=unit(1,"cm"),
-                  legend.text = element_text (size = 22),
-                  legend.position = c(0.6, 0.9),
-                  legend.background = element_rect(fill = NA),
-                  title = element_text(size = 23),
-                  strip.text.y =  element_text (size = 9),
-                  strip.text.x =  element_text (size = 9),
-                  axis.title.x =  element_text (size = 23, vjust = -0.8),
-                  axis.title.y =  element_text (size = 23),
-                  axis.text.x =  element_text (size = 22,  vjust = 0.5),
-                  axis.text.y =  element_text (size = 22))
-        }
-      
-        ggsave(filename = paste0("stage",s,"_", unique(df1pooli$Bgroupfile), unique(df1pooli$marker),"_fitted.pdf"), 
-               plot = p1, path = figDir, width = 8, height = 8, units = "in") 
-        
-        
+    df1pooli <- filter(df1pool, stage == s & Bgroup == "Non-naive" & marker == markeri)
+    df2pooli <- filter(df2pool, stage == s & Bgroup == "Non-naive" & marker == markeri)
+    if(dim(df1pooli)[1] > 0){
+      if(plotFitted){
+        vlabel <- ifelse(s == 1, "Non-naïve MV", "Non-naïve BV")
+        plabel <- ifelse(s == 1, "Stage 1 Non-naïve Placebo", "Stage 2 Non-naïve Placebo")
+        p1 <- ggplot() +
+          geom_point(data = df1pooli, aes(x = plottime, y = mean, color = treatment), size = 5) +
+          geom_errorbar(data = df1pooli, aes(x = plottime, ymin =low, ymax = high, color = treatment), linewidth = 1.7, width = 10) +
+          geom_line(aes(x = time, y = Female, color = treatment), data = df2pooli, linewidth = 1.5) +
+          scale_y_continuous(limits = ylim, 
+                             breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
+                             labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
+          #facet_wrap(vars(markerlabel)) + 
+          scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
+                             expand = expansion(0, 0), 
+                             labels = c("43", "78", "134", "202", "292", "387" )) +
+          geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
+          annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", 
+                                                                                           "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) + 
+          theme_bw()+
+          ylab(plot_labf(markeri)) +
+          xlab("Days since Enrollment")+
+          scale_color_manual(breaks = c("Vaccine", "Placebo"), 
+                             values = c( "darkorange", "#619CFF"), labels = c(vlabel, plabel)) +
+          #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
+          theme(legend.title = element_blank(),
+                plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+                legend.direction = "vertical",
+                legend.key.width=unit(1,"cm"),
+                legend.text = element_text (size = 22),
+                legend.position = c(0.6, 0.93),
+                legend.background = element_rect(fill = NA),
+                title = element_text(size = 23),
+                strip.text.y =  element_text (size = 9),
+                strip.text.x =  element_text (size = 9),
+                axis.title.x =  element_text (size = 24, vjust = -0.8),
+                axis.title.y =  element_text (size = 24),
+                axis.text.x =  element_text (size = 23,  vjust = 0.5),
+                axis.text.y =  element_text (size = 23))
+      }else{
+        p1 <- ggplot() +
+          geom_point(data = df1pooli, aes(x = plottime, y = mean, color = treatment), size = 5) +
+          geom_errorbar(data = df1pooli, aes(x = plottime, ymin =low, ymax = high, color = treatment), linewidth = 1.7, width = 10) +
+          scale_y_continuous(limits = ylim, 
+                             breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
+                             labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
+          #facet_wrap(vars(markerlabel)) + 
+          scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
+                             expand = expansion(0, 0), 
+                             labels = c("43", "78", "134", "202", "292", "387" )) +
+          geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
+          annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", 
+                                                                                           "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) + 
+          theme_bw()+
+          ylab(plot_labf(markeri)) +
+          xlab("Days since Enrollment")+
+          scale_color_manual(breaks = c("Vaccine", "Placebo"), 
+                             values = c( "darkorange", "#619CFF")) +
+          #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
+          theme(legend.title = element_blank(),
+                plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+                legend.direction = "vertical",
+                legend.key.width=unit(1,"cm"),
+                legend.text = element_text (size = 22),
+                legend.position = c(0.6, 0.9),
+                legend.background = element_rect(fill = NA),
+                title = element_text(size = 23),
+                strip.text.y =  element_text (size = 9),
+                strip.text.x =  element_text (size = 9),
+                axis.title.x =  element_text (size = 23, vjust = -0.8),
+                axis.title.y =  element_text (size = 23),
+                axis.text.x =  element_text (size = 22,  vjust = 0.5),
+                axis.text.y =  element_text (size = 22))
       }
+      
+      ggsave(filename = paste0("stage",s,"_", unique(df1pooli$Bgroupfile), unique(df1pooli$marker),"_fitted.pdf"), 
+             plot = p1, path = figDir, width = 8, height = 8, units = "in") 
+      
       
     }
   }   
@@ -236,9 +231,8 @@ for(markeri in markers){
 }
 
 #Combine stage 1 naive and stage 2 naive
-
 for(markeri in markers){
-  if(markeri %in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")){
+  if(markeri %in% c("pseudoneutid50",  "pseudoneutid50_BA.4.5")){
     ylim <- c(1.25, 5.5)
   }else{
     ylim <- c(2.5, 6.1)
@@ -299,9 +293,8 @@ for(markeri in markers){
 
 
 #Combine stage 1 nonnaive and stage 2 nonnaive
-
 for(markeri in markers){
-  if(markeri %in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")){
+  if(markeri %in% c("pseudoneutid50",  "pseudoneutid50_BA.4.5")){
     ylim <- c(1.25, 5.5)
   }else{
     ylim <- c(2.7, 6.1)
@@ -354,118 +347,4 @@ for(markeri in markers){
            plot = p1, path = figDir, width = 8, height = 8, units = "in")
   }
 }
-
-
-#Combine stage 2 nonnaive GA vaccine and stage 2 nonnaive GB vaccine
-for(markeri in markers){
-  if(markeri %in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")){
-    ylim <- c(1.25, 5.5)
-  }else{
-    ylim <- c(2.7, 6.1)
-  }
-  LLOQmarker <- LLOQf (markeri)
-  df1pooli <- filter(df1pool, Bgroup %in% c("Non-naive Group A", "Non-naive Group B") &stage == 2 & marker == markeri & treatment == "Vaccine")
-  df2pooli <- filter(df2pool, Bgroup %in% c("Non-naive Group A", "Non-naive Group B")&stage == 2 &marker == markeri & treatment == "Vaccine")
-  df1pooli$plottime[df1pooli$Bgroup == "Non-naive Group B"] <- df1pooli$plottime[df1pooli$Bgroup == "Non-naive Group B"] +7
-  df2pooli$plottime[df2pooli$Bgroup == "Non-naive Group B"] <- df2pooli$plottime[df2pooli$Bgroup == "Non-naive Group B"] +7
-  
-  
-  if(dim(df1pooli)[1] > 0){
-    p1 <- ggplot() +
-      geom_point(data = df1pooli, aes(x = plottime, y = mean, color = Bgroup), size = 4) +
-      geom_errorbar(data = df1pooli, aes(x = plottime, ymin =low, ymax = high, color = Bgroup), linewidth = 1.7, width = 8) +
-      geom_line(aes(x = time, y = Female, color = Bgroup), data = df2pooli, linewidth = 1.5) +
-      scale_y_continuous(limits = ylim,
-                         breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1),
-                         labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-      #facet_wrap(vars(markerlabel)) +
-      scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420),
-                         expand = expansion(0, 0),
-                         labels = c("43", "78", "134", "202", "292", "387" )) +
-      geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
-      annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1",
-                                                                                       "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) +
-      theme_bw()+
-      ylab(plot_labf(markeri)) +
-      xlab("Day since Enrollment")+
-      scale_color_manual(breaks = c("Non-naive Group A", "Non-naive Group B"),
-                         values = c( "navyblue", "coral"), labels = c("Non-naïve BV Group A", "Non-naïve BV Group B")) +
-      #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
-      theme(legend.title = element_blank(),
-            plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-            legend.direction = "vertical",
-            legend.key.width=unit(1,"cm"),
-            legend.text = element_text (size = 22),
-            legend.position = c(0.68, 0.93),
-            legend.background = element_rect(fill = NA),
-            title = element_text(size = 23),
-            strip.text.y =  element_text (size = 9),
-            strip.text.x =  element_text (size = 9),
-            axis.title.x =  element_text (size = 23, vjust = -0.8),
-            axis.title.y =  element_text (size = 23),
-            axis.text.x =  element_text (size = 22,  vjust = 0.5),
-            axis.text.y =  element_text (size = 22))
-    
-   
-    ggsave(filename = paste0("nonnaive_stage2_vac", unique(df1pooli$marker),"_fitted.pdf"),
-           plot = p1, path = figDir, width = 8, height = 8, units = "in")
-  }
-}
-
-#Combine stage 2 nonnaive GA placebo and stage 2 nonnaive GB placebo
-for(markeri in markers){
-  if(markeri %in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5")){
-    ylim <- c(1.25, 5.5)
-  }else{
-    ylim <- c(2.3, 6.3)
-  }
-  LLOQmarker <- LLOQf (markeri)
-  df1pooli <- filter(df1pool, Bgroup %in% c("Non-naive Group A", "Non-naive Group B")&stage == 2 & marker == markeri & treatment != "Vaccine")
-  df2pooli <- filter(df2pool, Bgroup %in% c("Non-naive Group A", "Non-naive Group B")&stage == 2 &marker == markeri & treatment != "Vaccine")
-  df1pooli$plottime[df1pooli$Bgroup == "Non-naive Group B"] <- df1pooli$plottime[df1pooli$Bgroup == "Non-naive Group B"] +7
-  df2pooli$plottime[df2pooli$Bgroup == "Non-naive Group B"] <- df2pooli$plottime[df2pooli$Bgroup == "Non-naive Group B"] +7
-  
-  if(dim(df1pooli)[1] > 0){
-    p1 <- ggplot() +
-      geom_point(data = df1pooli, aes(x = plottime, y = mean, color = Bgroup), size = 4) +
-      geom_errorbar(data = df1pooli, aes(x = plottime, ymin =low, ymax = high, color = Bgroup), linewidth = 1.7, width = 8) +
-      geom_line(aes(x = time, y = Female, color = Bgroup), data = df2pooli, linewidth = 1.5) +
-      scale_y_continuous(limits = ylim,
-                         breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1),
-                         labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-
-      scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420),
-                         expand = expansion(0, 0),
-                         labels = c("43", "78", "134", "202", "292", "387" )) +
-      geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
-      annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1",
-                                                                                       "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) +
-      theme_bw()+
-      ylab(plot_labf(markeri)) +
-      xlab("Day since Enrollment")+
-      scale_color_manual(breaks = c("Non-naive Group A", "Non-naive Group B"),
-                         values = c( "navyblue", "coral"), labels = c("Stage 2 Non-naïve Group A Placebo", "Stage 2 Non-naïve Group B Placebo")) +
-      #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
-      theme(legend.title = element_blank(),
-            plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
-            legend.direction = "vertical",
-            legend.key.width=unit(1,"cm"),
-            legend.text = element_text (size = 22),
-            legend.position = c(0.5, 0.93),
-            legend.background = element_rect(fill = NA),
-            title = element_text(size = 23),
-            strip.text.y =  element_text (size = 9),
-            strip.text.x =  element_text (size = 9),
-            axis.title.x =  element_text (size = 23, vjust = -0.8),
-            axis.title.y =  element_text (size = 23),
-            axis.text.x =  element_text (size = 22,  vjust = 0.5),
-            axis.text.y =  element_text (size = 22))
-    
-   
-    ggsave(filename = paste0("nonnaive_stage2_plac", unique(df1pooli$marker),"_fitted.pdf"),
-           plot = p1, path = figDir, width = 8, height = 8, units = "in")
-  }
-}
-
-
 

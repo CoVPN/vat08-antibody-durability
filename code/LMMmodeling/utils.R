@@ -16,7 +16,7 @@ BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
     }
     lmmdata$Bmark1 <- ifelse(lmmdata$Bmark <=0, lmmdata$Bmark, 0)
     if(baselineAdj){
-      if(min(table(lmmdata$Sex)) <10){ # roughly 3 participants with minority sex
+      if(min(table(lmmdata$Sex)) <10){ 
         fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Bmark  + Age + BMI , lmmdata, REML=FALSE))
         fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark  + Age + BMI  , lmmdata, REML=FALSE))
       }else{
@@ -121,9 +121,6 @@ AUCsummaryConditional<- function(fmsummary, p){
       beta1 = coefest["tftime"]
       beta2 = coefest["Sex"]
       covbeta = vcov[c("(Intercept)", "tftime", "Sex"), c("(Intercept)", "tftime", "Sex")]
-      # varbeta0 = vcov["(Intercept)", "(Intercept)"]
-      # varbeta1 = vcov["tftime", "tftime"]
-      # covbeta0beta1 = vcov["(Intercept)", "tftime"]
       t <- seq(43, 387, 1)
       plott <- t/43
       t1 = 43
@@ -260,3 +257,53 @@ AntibodyLevelsummaryConditional<- function(fmsummary, p, t){
   
   
 }
+
+
+
+AUCsummaryMarginal <- function(fmsummary, lmmdata, p){
+  if(!is.na(p)){
+    coefest <- as.numeric(fmsummary$coefficients[, "Estimate"])
+    names(coefest) <- rownames(fmsummary$coefficient)
+    vcov <- fmsummary$vcov
+    names(coefest) <- rownames(fmsummary$coefficient)
+    rownames(vcov) <- rownames(fmsummary$coefficient)
+    colnames(vcov) <- rownames(fmsummary$coefficient)
+    
+    t <- seq(43, 387, 1)
+    plott <- t/43
+    t1 = 43
+    t2 = 202
+    if(p == 0){
+      tt <- log(plott)
+      a1 = (t2 - t1) 
+      a2 = (t2*log(t2) - t1*log(t1) - t2 + t1 - log(t1)*(t2 - t1))
+      
+    }else if (p == (-1)){
+      tt <- plott^p
+      a1 = (t2 - t1) 
+      a2 = t1*log(t2/t1)
+    }else {
+      tt <- plott^p
+      a1 = (t2 - t1) 
+      a2 = 1/t1^p*(t2^(p+1)/(p+1) - t1^(p+1)/(p+1))
+    }
+    
+    covadj <- names(coefest)[-c(1, 2)]
+    predF <- coefest["(Intercept)"] + coefest["tftime"]*tt
+    AUCest = coefest["(Intercept)"]*a1+ coefest["tftime"]*a2
+    for(cov in covadj){
+      predF <- predF + coefest[cov]*mean(lmmdata[, cov], na.rm = TRUE) 
+    }
+    
+    npredF <- cbind(t, predF, predF)
+    colnames(npredF) <- c("time","Female", "Male")
+    return(list(pred = npredF))
+  }else{
+    est = c(NA, NA, NA, NA)
+    names(est) <- c("AUC_Female", "Var_Female", "AUC_Male", "Var_Male")
+    return(list(pred = NA))
+  }
+  
+}
+
+

@@ -1,5 +1,5 @@
 rm(list=ls(all=TRUE))
-here::i_am("Readme.txt")
+here::i_am("README.md")
 repoDir <- here::here()
 datDir <- file.path(repoDir,"data")
 codeDir <- file.path(repoDir, "code")
@@ -12,7 +12,7 @@ library(plyr)
 library(lme4)
 library(doParallel)
 library(doRNG)
-registerDoParallel(35)
+registerDoParallel(2)
 
 
 source(file.path(codeDir, "LMMmodeling/utils.R"))
@@ -95,7 +95,7 @@ for(c in 1:dim(contrasts)[1]){
     #remove observations with missing mark
     dataAi <- filter(dataA, !is.na(mark))
     dataBi <- filter(dataB, !is.na(mark))
-    #remove participants with less than 3 obs
+    #make sure participants with less than 3 obs are removed
     nobsA <- table(dataAi$Ptid)
     ptidstoIncludeA <- names(nobsA)[nobsA >= 3]
     nobsB <- table(dataBi$Ptid)
