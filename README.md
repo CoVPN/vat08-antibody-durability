@@ -54,7 +54,7 @@ well as ratios of these metrics for comparisons such as vaccine vs. placebo, Non
   
 ### 3. User Instructions
   Input datasets include `vat08_combined_data_processed_longitudinal_bAb.csv`, `vat08_combined_data_processed_longitudinal_nAb.csv`. 
-  Place these datasets in the `data` subfolder within the cloned repository. 
+  Place both datasets in the `data` subfolder within the cloned repository. 
   
   Create a new R project for the cloned repository. From the command line, starting in the `code` directory, run the following commands. 
   Each code file should complete in under 10 minutes except for `code/LMMmodeling/confidenceInt.R` and 
