@@ -61,10 +61,6 @@ well as ratios of these metrics for comparisons such as vaccine vs. placebo, Non
   `code/LMMmodeling/permutation_test.R` which may take a few hours, depending on the number of nodes used for parallel computation.
   All output are saved as either figures (`.pdf` files in the `figures` directory) or tables (`.csv` files in the `tables` directory).
     
-    R CMD BATCH data_proc.R &
-    R CMD BATCH desc/descFig1.R &
-    R CMD BATCH desc/descFig2.R &
-    R CMD BATCH desc/descTable.R &
     R CMD BATCH LMMmodeling/confidenceInt.R &
     R CMD BATCH LMMmodeling/permutation_test.R &
     R CMD BATCH LMMmodeling/FittedTrajectoryPlot.R &
