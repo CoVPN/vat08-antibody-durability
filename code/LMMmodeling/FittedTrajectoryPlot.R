@@ -172,7 +172,7 @@ for(markeri in markers){
                              values = c( "darkorange", "#619CFF"), labels = c(vlabel, plabel)) +
           #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
           theme(legend.title = element_blank(),
-                plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+                plot.margin = unit(c(0.7, 0.7, 0.7, 0.7), "lines"),
                 legend.direction = "vertical",
                 legend.key.width=unit(1,"cm"),
                 legend.text = element_text (size = 22),
@@ -206,7 +206,7 @@ for(markeri in markers){
                              values = c( "darkorange", "#619CFF")) +
           #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
           theme(legend.title = element_blank(),
-                plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+                plot.margin = unit(c(0.7, 0.7, 0.7, 0.7), "lines"),
                 legend.direction = "vertical",
                 legend.key.width=unit(1,"cm"),
                 legend.text = element_text (size = 22),
@@ -269,7 +269,7 @@ for(markeri in markers){
                          values = c( "darkorchid", "limegreen"), labels = c("Naïve MV", "Naïve BV")) +
     
       theme(legend.title = element_blank(),
-            plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+            plot.margin = unit(c(0.7, 0.7, 0.7, 0.7), "lines"),
             legend.direction = "vertical",
             legend.key.width=unit(1,"cm"),
             legend.text = element_text (size = 22),
@@ -329,7 +329,7 @@ for(markeri in markers){
       scale_color_manual(breaks = c("1", "2"),
                          values = c( "navyblue", "coral"), labels = c("Non-naïve MV", "Non-naïve BV")) +
       theme(legend.title = element_blank(),
-            plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), "lines"),
+            plot.margin = unit(c(0.7, 0.7, 0.7, 0.7), "lines"),
             legend.direction = "vertical",
             legend.key.width=unit(1,"cm"),
             legend.text = element_text (size = 22),

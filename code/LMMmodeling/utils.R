@@ -1,22 +1,22 @@
 #function to fit the best fraction polynomial model 
 #return AUC/(tmax - tmin) and the variance of it
 BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
-
+  
   nptid <- length(unique(lmmdata$Ptid))
   op <- options(warn=2)
-  lmmdata$time2 <- (lmmdata$time2/43)
+  lmmdata$time <- (lmmdata$time/43)
   aictable <- tibble("p" = numeric(), "aicv" = numeric(), "random effect" = character(), "warning" = numeric())
   fraction <- c(-2, -1.5, -1, -0.5, 0, 0.5, 1)
   for(i in 1:length(fraction)){
     piter = fraction[i]
     if(piter == 0){
-      lmmdata$tftime <- log(lmmdata$time2)
+      lmmdata$tftime <- log(lmmdata$time)
     }else{
-      lmmdata$tftime <- lmmdata$time2^piter
+      lmmdata$tftime <- lmmdata$time^piter
     }
     lmmdata$Bmark1 <- ifelse(lmmdata$Bmark <=0, lmmdata$Bmark, 0)
     if(baselineAdj){
-      if(min(table(lmmdata$Sex)) <10){ 
+      if(min(table(lmmdata$Sex)) <10){ # roughly 3 participants with minority sex
         fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Bmark  + Age + BMI , lmmdata, REML=FALSE))
         fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark  + Age + BMI  , lmmdata, REML=FALSE))
       }else{
@@ -34,7 +34,7 @@ BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
       }
       
     }  
-      
+    
     
     if((is(fm1, "try-error"))){
       aictable <- add_row(.data = aictable, "p" = piter, "random effect" = "random intercept", "aicv" = NA,
@@ -58,9 +58,9 @@ BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
   
   if(length(a$p) >0) {
     if(a$p[1] == 0){
-      lmmdata$tftime <- log(lmmdata$time2)
+      lmmdata$tftime <- log(lmmdata$time)
     }else{
-      lmmdata$tftime <- lmmdata$time2^(a$p[1])
+      lmmdata$tftime <- lmmdata$time^(a$p[1])
     }
     if(a$`random effect`[1] == "random intercept"){
       if(baselineAdj){
@@ -95,7 +95,7 @@ BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
         
       } 
     }
-   
+    
     fmsummary <- summary(fm)
     
     return(list(fmsummary = fmsummary, p = a$p[1], nptid = nptid,
@@ -121,6 +121,9 @@ AUCsummaryConditional<- function(fmsummary, p){
       beta1 = coefest["tftime"]
       beta2 = coefest["Sex"]
       covbeta = vcov[c("(Intercept)", "tftime", "Sex"), c("(Intercept)", "tftime", "Sex")]
+      # varbeta0 = vcov["(Intercept)", "(Intercept)"]
+      # varbeta1 = vcov["tftime", "tftime"]
+      # covbeta0beta1 = vcov["(Intercept)", "tftime"]
       t <- seq(43, 387, 1)
       plott <- t/43
       t1 = 43
@@ -198,6 +201,52 @@ AUCsummaryConditional<- function(fmsummary, p){
   
 }
 
+AUCsummaryMarginal <- function(fmsummary, lmmdata, p){
+  if(!is.na(p)){
+    coefest <- as.numeric(fmsummary$coefficients[, "Estimate"])
+    names(coefest) <- rownames(fmsummary$coefficient)
+    vcov <- fmsummary$vcov
+    names(coefest) <- rownames(fmsummary$coefficient)
+    rownames(vcov) <- rownames(fmsummary$coefficient)
+    colnames(vcov) <- rownames(fmsummary$coefficient)
+    
+    t <- seq(43, 387, 1)
+    plott <- t/43
+    t1 = 43
+    t2 = 202
+    if(p == 0){
+      tt <- log(plott)
+      a1 = (t2 - t1) 
+      a2 = (t2*log(t2) - t1*log(t1) - t2 + t1 - log(t1)*(t2 - t1))
+      
+    }else if (p == (-1)){
+      tt <- plott^p
+      a1 = (t2 - t1) 
+      a2 = t1*log(t2/t1)
+    }else {
+      tt <- plott^p
+      a1 = (t2 - t1) 
+      a2 = 1/t1^p*(t2^(p+1)/(p+1) - t1^(p+1)/(p+1))
+    }
+    
+    covadj <- names(coefest)[-c(1, 2)]
+    predF <- coefest["(Intercept)"] + coefest["tftime"]*tt
+    AUCest = coefest["(Intercept)"]*a1+ coefest["tftime"]*a2
+    for(cov in covadj){
+      predF <- predF + coefest[cov]*mean(lmmdata[, cov], na.rm = TRUE) 
+    }
+    
+    npredF <- cbind(t, predF, predF)
+    colnames(npredF) <- c("time","Female", "Male")
+    return(list(pred = npredF))
+  }else{
+    est = c(NA, NA, NA, NA)
+    names(est) <- c("AUC_Female", "Var_Female", "AUC_Male", "Var_Male")
+    return(list(pred = NA))
+  }
+  
+}
+
 
 AntibodyLevelsummaryConditional<- function(fmsummary, p, t){
   if(!is.na(p)){
@@ -257,53 +306,4 @@ AntibodyLevelsummaryConditional<- function(fmsummary, p, t){
   
   
 }
-
-
-
-AUCsummaryMarginal <- function(fmsummary, lmmdata, p){
-  if(!is.na(p)){
-    coefest <- as.numeric(fmsummary$coefficients[, "Estimate"])
-    names(coefest) <- rownames(fmsummary$coefficient)
-    vcov <- fmsummary$vcov
-    names(coefest) <- rownames(fmsummary$coefficient)
-    rownames(vcov) <- rownames(fmsummary$coefficient)
-    colnames(vcov) <- rownames(fmsummary$coefficient)
-    
-    t <- seq(43, 387, 1)
-    plott <- t/43
-    t1 = 43
-    t2 = 202
-    if(p == 0){
-      tt <- log(plott)
-      a1 = (t2 - t1) 
-      a2 = (t2*log(t2) - t1*log(t1) - t2 + t1 - log(t1)*(t2 - t1))
-      
-    }else if (p == (-1)){
-      tt <- plott^p
-      a1 = (t2 - t1) 
-      a2 = t1*log(t2/t1)
-    }else {
-      tt <- plott^p
-      a1 = (t2 - t1) 
-      a2 = 1/t1^p*(t2^(p+1)/(p+1) - t1^(p+1)/(p+1))
-    }
-    
-    covadj <- names(coefest)[-c(1, 2)]
-    predF <- coefest["(Intercept)"] + coefest["tftime"]*tt
-    AUCest = coefest["(Intercept)"]*a1+ coefest["tftime"]*a2
-    for(cov in covadj){
-      predF <- predF + coefest[cov]*mean(lmmdata[, cov], na.rm = TRUE) 
-    }
-    
-    npredF <- cbind(t, predF, predF)
-    colnames(npredF) <- c("time","Female", "Male")
-    return(list(pred = npredF))
-  }else{
-    est = c(NA, NA, NA, NA)
-    names(est) <- c("AUC_Female", "Var_Female", "AUC_Male", "Var_Male")
-    return(list(pred = NA))
-  }
-  
-}
-
 

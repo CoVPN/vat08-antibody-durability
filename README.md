@@ -10,6 +10,12 @@ Durability of Neutralizing and Anti-Spike Binding IgG Antibody Responses to Mono
   
   Main programs as well as specific R packages and R files required by each program are listed below.
 
+* `code/desc/descFig.R`: generates antibody trajectory plots before and after SARS-CoV-2 infections 
+    + tidyverse 2.0.0 
+    + plyr 1.8.9 
+    + common.R 
+    + descFigUtils.R
+     
 * `code/LMMmodeling/confidenceInt.R`: computes bootstrap confidence intervals for Day 43 Geometric mean, durability, and D202-to-D43 Geometric mean ratio, as 
 well as ratios of these metrics for comparisons such as vaccine vs. placebo, Nonnaive vs. naive, Stage 2 vs. Stage 1.
     + tidyverse 2.0.0 
@@ -45,7 +51,9 @@ well as ratios of these metrics for comparisons such as vaccine vs. placebo, Non
     + ggplot2 3.5.2
     + common.R
     + summaryUtils.R
-    
+
+*  `code/MainFiguresTables.Rmd`: compile main tables and figures in a pdf   
+
 ### 2. Installation Guide
   
 * Install required version of *R*.  
@@ -61,7 +69,11 @@ well as ratios of these metrics for comparisons such as vaccine vs. placebo, Non
   `code/LMMmodeling/permutation_test.R` which may take a few hours, depending on the number of nodes used for parallel computation.
   All output are saved as either figures (`.pdf` files in the `figures` directory) or tables (`.csv` files in the `tables` directory).
     
+    R CMD BATCH desc/descFig.R &
     R CMD BATCH LMMmodeling/confidenceInt.R &
     R CMD BATCH LMMmodeling/permutation_test.R &
     R CMD BATCH LMMmodeling/FittedTrajectoryPlot.R &
     R CMD BATCH summary/summary.R 
+    R CMD BATCH MainFiguresTables.Rmd
+    
+    

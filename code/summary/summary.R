@@ -48,8 +48,7 @@ AUC_fwer_p_value <- AUC_p_value[, 1:14]
 D43_fwer_p_value <- D43_p_value[, 1:14]
 rate_fwer_p_value <- rate_p_value[, 1:14]
 for(i in 1:13){
-  #contrasts_adjust <- seq(1, 9, 1)[-c(2, 4, 9)]
-  contrasts_adjust <- seq(1, 11, 1)[-c(2, 4, 8, 11)]
+  contrasts_adjust <- seq(1, 11, 1)[-c(2, 4, 8, 10, 11)]
   AUC_fwer_p_value[contrasts_adjust, i+1] <- p.adjust(AUC_fwer_p_value[contrasts_adjust, i+1], method = "holm")
   D43_fwer_p_value[contrasts_adjust, i+1] <- p.adjust(D43_fwer_p_value[contrasts_adjust, i+1], method = "holm")
   rate_fwer_p_value[contrasts_adjust, i+1] <- p.adjust(rate_fwer_p_value[contrasts_adjust, i+1], method = "holm")

@@ -16,9 +16,9 @@ reformatRatio <- function(x){
   y2 <- strsplit(strsplit(y[[1]][2], split = "\\(")[[1]][2], split = "\\,")[[1]][1]
   y3 <- strsplit(y[[1]][3], split = "\\)")[[1]][1]
   
-  est <- format(round(as.numeric(y1),2), nsmall = 1, digits = 1)
-  ll <- format(round(as.numeric(y2),2), nsmall = 1, digits = 1)
-  ul <- format(round(as.numeric(y3),2), nsmall = 1, digits = 1)
+  est <- format(round(as.numeric(y1),2), nsmall = 2, digits = 2)
+  ll <- format(round(as.numeric(y2),2), nsmall = 2, digits = 2)
+  ul <- format(round(as.numeric(y3),2), nsmall = 2, digits = 2)
   return(paste0(est, " (", ll, ", ", ul, ")", sep = ""))
 }
 
