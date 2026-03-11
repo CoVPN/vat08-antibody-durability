@@ -12,7 +12,7 @@ library(plyr)
 library(lme4)
 library(doParallel)
 library(doRNG)
-registerDoParallel(2)
+registerDoParallel(35)
 
 
 source(file.path(codeDir, "LMMmodeling/utils.R"))

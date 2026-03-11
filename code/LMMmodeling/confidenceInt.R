@@ -85,6 +85,7 @@ if(runBootPar){
       #remove observations with missing mark
       dataAi <- filter(dataA, !is.na(mark))
       dataBi <- filter(dataB, !is.na(mark))
+      
       #make sure participants with less than 3 obs are removed
       nobsA <- table(dataAi$Ptid)
       ptidstoIncludeA <- names(nobsA)[nobsA >= 3]
@@ -192,6 +193,7 @@ n_Female <- matrix(NA, nrow = dim(contrasts)[1], ncol = length(markers)*2)
 AUC_Male_CL <- matrix(NA, nrow = dim(contrasts)[1], ncol = length(markers)*12)
 AUC_Male_CU <- matrix(NA, nrow = dim(contrasts)[1], ncol = length(markers)*12)
 AUC_Male <- matrix(NA, nrow = dim(contrasts)[1], ncol = length(markers)*12)
+
 #confidence intervals
 alpha = 0.05
 

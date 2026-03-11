@@ -42,6 +42,7 @@ well as ratios of these metrics for comparisons such as vaccine vs. placebo, Non
     + plyr 1.8.9 
     + lme4 1.1-37
     + ggplot2 3.5.2
+    + scales 1.4.0
     + common.R
     + utils.R
 

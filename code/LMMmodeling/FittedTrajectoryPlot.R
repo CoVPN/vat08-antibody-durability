@@ -10,6 +10,8 @@ library(tidyverse)
 library(ggplot2)
 library(plyr)
 library(lme4)
+library(scales)
+
 source(file.path(codeDir, "common.R"))
 source(file.path(codeDir, "LMMmodeling/utils.R"))
 
@@ -65,7 +67,7 @@ for(g in 1:dim(groups)[1]){
     yall <- lmmdata$mark
     df1 <- data.frame()
     for(timex in c(43, 78, 134, 202, 292, 387)){
-      y <- yall[lmmdata$time2 == timex]
+      y <- yall[lmmdata$visitn == paste0("Day",timex)]
       ybar <- mean(y, na.rm = TRUE)
       ll <- quantile(y, probs = 0.025, na.rm = TRUE)
       ul <- quantile(y, probs = 0.975, na.rm = TRUE)
@@ -93,7 +95,7 @@ for(g in 1:dim(groups)[1]){
     antiSonly <- ifelse(setup$Baseline == "nonnaiveD01SposOnly", 1, 0)
     df1$Bgroupfile <- setup$Baseline
     df1pool <- rbind(df1pool, df1)
-    #fractional polynomial
+    
     if(plotFitted){
       fit <- BFpolynomialFit(lmmdata, baselineAdj)
       fitsummary <- AUCsummaryMarginal(fit$fmsummary, lmmdata, fit$p)
@@ -127,7 +129,7 @@ df2pool$markerlabel <- factor(df2pool$markerlabel, levels = c("bAb-IgG Spike Ref
                                                               "nAb-ID50 Omicron-BA.2", "nAb-ID50 Omicron-BA.4/BA.5"))
 
 
-library(scales)
+
 scientific_10 <- function(x) {
   y <- NULL
   for(i in 1:length(x)){
@@ -158,7 +160,6 @@ for(markeri in markers){
           scale_y_continuous(limits = ylim, 
                              breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
                              labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-          #facet_wrap(vars(markerlabel)) + 
           scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
                              expand = expansion(0, 0), 
                              labels = c("43", "78", "134", "202", "292", "387" )) +
@@ -170,7 +171,6 @@ for(markeri in markers){
           xlab("Days since Enrollment")+
           scale_color_manual(breaks = c("Vaccine", "Placebo"), 
                              values = c( "darkorange", "#619CFF"), labels = c(vlabel, plabel)) +
-          #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
           theme(legend.title = element_blank(),
                 plot.margin = unit(c(0.7, 0.7, 0.7, 0.7), "lines"),
                 legend.direction = "vertical",
@@ -192,7 +192,6 @@ for(markeri in markers){
           scale_y_continuous(limits = ylim, 
                              breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
                              labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-          #facet_wrap(vars(markerlabel)) + 
           scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
                              expand = expansion(0, 0), 
                              labels = c("43", "78", "134", "202", "292", "387" )) +
@@ -204,7 +203,6 @@ for(markeri in markers){
           xlab("Days since Enrollment")+
           scale_color_manual(breaks = c("Vaccine", "Placebo"), 
                              values = c( "darkorange", "#619CFF")) +
-          #ggtitle(paste0("Stage ", s, " ",gsub("i","ï",bs)))+
           theme(legend.title = element_blank(),
                 plot.margin = unit(c(0.7, 0.7, 0.7, 0.7), "lines"),
                 legend.direction = "vertical",
@@ -230,7 +228,7 @@ for(markeri in markers){
   
 }
 
-#Combine stage 1 naive and stage 2 naive
+
 for(markeri in markers){
   if(markeri %in% c("pseudoneutid50",  "pseudoneutid50_BA.4.5")){
     ylim <- c(1.25, 5.5)
@@ -254,14 +252,12 @@ for(markeri in markers){
       scale_y_continuous(limits = ylim, 
                          breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1), 
                          labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-      #facet_wrap(vars(markerlabel)) + 
       scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420), 
                          expand = expansion(0, 0), 
                          labels = c("43", "78", "134", "202", "292", "387" )) +
       geom_hline(yintercept = LLOQmarker, linetype = 'dotted')+
       annotate(geom = "text", x = 18, y = LLOQmarker+0.1, label = ifelse(markeri%in% c("pseudoneutid50", "pseudoneutid50_B.1.351", "pseudoneutid50_BA.1", 
                                                                                        "pseudoneutid50_BA.2", "pseudoneutid50_BA.4.5"), "LOD", "LLOQ"), size = 5) + 
-      
       theme_bw()+
       ylab(plot_labf(markeri)) +
       xlab("Days since Enrollment")+
@@ -285,14 +281,11 @@ for(markeri in markers){
   ggsave(filename = paste0("naive", unique(df1pooli$marker),"_fitted.pdf"), 
            plot = p1, path = figDir, width = 8, height = 8, units = "in") 
     
-    
   }
-  
-  
 }
 
 
-#Combine stage 1 nonnaive and stage 2 nonnaive
+
 for(markeri in markers){
   if(markeri %in% c("pseudoneutid50",  "pseudoneutid50_BA.4.5")){
     ylim <- c(1.25, 5.5)
@@ -316,7 +309,6 @@ for(markeri in markers){
       scale_y_continuous(limits = ylim,
                          breaks = seq(floor(ylim[1]), ceiling(ylim[2]), 1),
                          labels = scientific_10(10^seq(floor(ylim[1]), ceiling(ylim[2]), 1))) +
-      #facet_wrap(vars(markerlabel)) +
       scale_x_continuous(breaks = c(43, 78, 134, 202, 292, 387 ), limits = c(0, 420),
                          expand = expansion(0, 0),
                          labels = c("43", "78", "134", "202", "292", "387" )) +
@@ -342,7 +334,6 @@ for(markeri in markers){
             axis.title.y =  element_text (size = 23),
             axis.text.x =  element_text (size = 22,  vjust = 0.5),
             axis.text.y =  element_text (size = 22))
-
     ggsave(filename = paste0("nonnaive", unique(df1pooli$marker),"_fitted.pdf"),
            plot = p1, path = figDir, width = 8, height = 8, units = "in")
   }

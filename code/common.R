@@ -86,11 +86,3 @@ LLOQf <- function(marker){
   ) 
 }
 
-vars <- c("Ptid","Trt", "Trialstage", "Sex", "Age", "BMI", "Age", "Bserostatus", "EventTimeFirstInfectionD1", "EventIndFirstInfectionD1",
-          "EventTimeFirstInfectionD43", "EventIndFirstInfectionD43", "FirstEnrollmentDate", "Perprotocol", 
-          "D01_S_pos_only_in_non_naive_group","NumberdaysD1toD22", "NumberdaysD1toD43", "NumberdaysD1toD78", "NumberdaysD1toD134", "NumberdaysD1toD202", "NumberdaysD1toD292",
-          "NumberdaysD1toD387", "D01_S_pos", "D01_N_pos", "D01_NAAT_pos", "riskScore", "time", "visitn",
-          "BbindSpike", "BbindSpike_beta", "BbindSpike_alpha", "BbindSpike_gamma", "BbindSpike_delta1", "BbindSpike_delta2", "BbindSpike_delta3", "BbindSpike_omicron",
-          "Bpseudoneutid50", "Bpseudoneutid50_B.1.351", "Bpseudoneutid50_BA.1", "Bpseudoneutid50_BA.2", "Bpseudoneutid50_BA.4.5")
-
-

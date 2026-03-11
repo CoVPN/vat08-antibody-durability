@@ -17,20 +17,20 @@ BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
     lmmdata$Bmark1 <- ifelse(lmmdata$Bmark <=0, lmmdata$Bmark, 0)
     if(baselineAdj){
       if(min(table(lmmdata$Sex)) <10){ # roughly 3 participants with minority sex
-        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Bmark  + Age + BMI , lmmdata, REML=FALSE))
-        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark  + Age + BMI  , lmmdata, REML=FALSE))
+        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Bmark  + Age + BMI , lmmdata, REML=FALSE), silent = TRUE)
+        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark  + Age + BMI  , lmmdata, REML=FALSE), silent = TRUE)
       }else{
-        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Bmark  + Age + Sex + BMI, lmmdata, REML=FALSE))
-        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark + Age + Sex + BMI , lmmdata, REML=FALSE))
+        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Bmark  + Age + Sex + BMI, lmmdata, REML=FALSE), silent = TRUE)
+        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark + Age + Sex + BMI , lmmdata, REML=FALSE), silent = TRUE)
       }
       
     }else{
       if(min(table(lmmdata$Sex)) <10){
-        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + BMI , lmmdata, REML=FALSE))
-        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + BMI , lmmdata, REML=FALSE))
+        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + BMI , lmmdata, REML=FALSE), silent = TRUE)
+        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + BMI , lmmdata, REML=FALSE), silent = TRUE)
       }else{
-        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + Sex + BMI, lmmdata, REML=FALSE))
-        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + Sex + BMI , lmmdata, REML=FALSE))
+        fm1 <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + Sex + BMI, lmmdata, REML=FALSE), silent = TRUE)
+        fm2 <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + Sex + BMI , lmmdata, REML=FALSE), silent = TRUE)
       }
       
     }  
@@ -65,32 +65,32 @@ BFpolynomialFit <- function(lmmdata, baselineAdj = FALSE){
     if(a$`random effect`[1] == "random intercept"){
       if(baselineAdj){
         if(min(table(lmmdata$Sex)) <10){
-          fm <- try(lmer(mark ~ tftime  + (1|Ptid)+ Bmark  + Age + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (1|Ptid)+ Bmark  + Age + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }else{
-          fm <- try(lmer(mark ~ tftime  + (1|Ptid)+ Bmark  + Age + Sex + BMI , lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (1|Ptid)+ Bmark  + Age + Sex + BMI , lmmdata, REML=TRUE), silent = TRUE)
         }
         
       }else{
         if(min(table(lmmdata$Sex)) <10){
-          fm <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }else{
-          fm <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + Sex + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (1 |Ptid) + Age + Sex + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }
         
       } 
     }else{
       if(baselineAdj){
         if(min(table(lmmdata$Sex)) <10){
-          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark  + Age + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark  + Age + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }else{
-          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark   + Age + Sex + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid)+ Bmark   + Age + Sex + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }
         
       }else{
         if(min(table(lmmdata$Sex)) <10){
-          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }else{
-          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + Sex + BMI, lmmdata, REML=TRUE))
+          fm <- try(lmer(mark ~ tftime  + (tftime |Ptid) + Age + Sex + BMI, lmmdata, REML=TRUE), silent = TRUE)
         }
         
       } 
@@ -121,9 +121,6 @@ AUCsummaryConditional<- function(fmsummary, p){
       beta1 = coefest["tftime"]
       beta2 = coefest["Sex"]
       covbeta = vcov[c("(Intercept)", "tftime", "Sex"), c("(Intercept)", "tftime", "Sex")]
-      # varbeta0 = vcov["(Intercept)", "(Intercept)"]
-      # varbeta1 = vcov["tftime", "tftime"]
-      # covbeta0beta1 = vcov["(Intercept)", "tftime"]
       t <- seq(43, 387, 1)
       plott <- t/43
       t1 = 43
@@ -244,7 +241,6 @@ AUCsummaryMarginal <- function(fmsummary, lmmdata, p){
     names(est) <- c("AUC_Female", "Var_Female", "AUC_Male", "Var_Male")
     return(list(pred = NA))
   }
-  
 }
 
 
@@ -276,7 +272,6 @@ AntibodyLevelsummaryConditional<- function(fmsummary, p, t){
       AntibodyLevelVarMale = covbeta[1, 1] + covbeta[3, 3] + 2*covbeta[1, 3]+ covbeta[2, 2]*a2^2 + 2*(covbeta[1, 2] + covbeta[2, 3])*a2
       est <- c(AntibodyLevelEstFemale, AntibodyLevelVarFemale, AntibodyLevelEstMale, AntibodyLevelVarMale)
       names(est) <- c("Est_Female", "Var_Female", "Est_Male", "Var_Male")
-      
       return(est)
     }else{
       beta0 = coefest["(Intercept)"]
@@ -289,18 +284,15 @@ AntibodyLevelsummaryConditional<- function(fmsummary, p, t){
       }else{
         a2 = (t/43)^p
       }
-      
       AntibodyLevelEst = beta0+ beta1*a2
       AntibodyLevelVar = varbeta0 + varbeta1*a2^2 + 2*covbeta0beta1*a2
       est = c(AntibodyLevelEst, AntibodyLevelVar, AntibodyLevelEst, AntibodyLevelVar)
       names(est) <- c("Est_Female", "Var_Female", "Est_Male", "Var_Male")
-      
       return(est)
     }
   }else{
     est = c(NA, NA, NA, NA)
     names(est) <- c("Est_Female", "Var_Female", "Est_Male", "Var_Male")
-    
     return(est)
   }
   

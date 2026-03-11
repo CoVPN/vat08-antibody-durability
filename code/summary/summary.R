@@ -43,7 +43,8 @@ AUC <- read.csv(file.path(outputDir, paste0("AUC_", sex, ".csv")))
 n<- read.csv(file.path(outputDir, paste0("n_", sex, ".csv")))
 
 #FWER p-value adjustment 
-#excluding stage 1 nonnaive placebo vs. stage 2 nonnaive placebo, stage 2 nonnaive group A vs. stage 2 nonnaive group B
+#excluding stage 1 nonnaive placebo vs. stage 2 nonnaive placebo, stage 2 nonnaive group A vaccine vs. stage 2 nonnaive group B vaccine,
+#stage 2 nonnaive group A placebo vs. stage 2 nonnaive group B placebo
 AUC_fwer_p_value <- AUC_p_value[, 1:14]
 D43_fwer_p_value <- D43_p_value[, 1:14]
 rate_fwer_p_value <- rate_p_value[, 1:14]
