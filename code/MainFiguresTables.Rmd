@@ -58,6 +58,7 @@ options(xtable.size = "normalsize")
 \clearpage
 # Main Text Figures and Tables
 
+## Figure 1
 \begin{center}
 \vspace*{-2mm}
 ```{r, out.width='45%', fig.cap="nAb-ID50 titers against Omicron BA.4/BA.5 and bAb-IgG Spike concentrations against Omicron before detected SARS-CoV-2 infection in the longitudinal analysis cohorts, separately by trial stage, treatment arm, and Naïve vs. Non-naïve status."}
@@ -68,6 +69,20 @@ include_graphics(c(file.path(figureDir, "nonnaive_pseudoneutid50_BA.4.5_trajecto
 ```
 \end{center}
 
+
+\clearpage
+## Figure 2
+
+\begin{center}
+\vspace*{-2mm}
+```{r, out.width='20%', fig.cap="Empirical geometric mean (GM) nAb-ID50 titers and fitted linear mixed models by treatment arm and trial stage for the Non-naïve groups in the nAb longitudinal analysis cohort. Points and bars represent the empirical GM and empirical 2.5% - 97.5% quantiles. Solid curves indicate point-wise GM of fitted responses that were based on fixed effects only. LOD: limit of detection."}
+include_graphics(c(file.path(figureDir, "stage1_nonnaivepseudoneutid50_BA.4.5_fitted.pdf"),
+                  file.path(figureDir, "stage1_nonnaivepseudoneutid50_fitted.pdf"),
+                   file.path(figureDir, "stage2_nonnaivepseudoneutid50_BA.4.5_fitted.pdf"),
+                  file.path(figureDir, "stage2_nonnaivepseudoneutid50_fitted.pdf")
+                   ))
+```
+\end{center}
 
 \begin{center}
 \vspace*{-2mm}
@@ -83,6 +98,21 @@ include_graphics(c(file.path(figureDir, "D43_nAb-ID50Omicron-BA.4BA.5VvsPsummary
 \end{center}
 
 
+\clearpage
+## Figure 3
+\begin{center}
+\vspace*{-2mm}
+```{r, out.width='20%', fig.cap="Empirical geometric mean (GM) bAb-IgG Spike concentrations and fitted linear mixed models by treatment arm and trial stage for the Non-naïve groups in the bAb longitudinal analysis cohort. Points and bars represent the empirical GM and empirical 2.5% - 97.5% quantiles of antibody levels at each longitudinal blood draw visit. Solid curves indicate point-wise GM of fitted responses that were based on fixed effects only. LLOQ: lower limit of quantitation. "}
+
+include_graphics(c(file.path(figureDir, "stage1_nonnaivebindSpike_omicron_fitted.pdf"),
+                   file.path(figureDir, "stage1_nonnaivebindSpike_fitted.pdf"),
+                    file.path(figureDir, "stage2_nonnaivebindSpike_omicron_fitted.pdf"),
+                  file.path(figureDir, "stage2_nonnaivebindSpike_fitted.pdf")
+                  
+                   ))
+```
+\end{center}
+
 \begin{center}
 \vspace*{-2mm}
 ```{r, out.width='45%', fig.cap="Estimated D43 GM bAb-IgG Spike concentrations, durability [10 to the power of time- and population-averaged log10 antibody level from D43 to D202], and D202-to-D43 geometric mean ratios (GMR) by treatment arm, with estimated vaccine-to-placebo ratios (95% CI). "}
@@ -97,60 +127,8 @@ include_graphics(c(file.path(figureDir, "D43_bAb-IgGSpikeOmicronVvsPsummary.pdf"
 \end{center}
 
 
-
-\begin{center}
-\vspace*{-2mm}
-```{r, out.width='45%', fig.cap="Estimated D43 GM antibody markers, durability [10 to the power of time- and population-averaged log10 antibody level from D43 to D202], and D202-to-D43 geometric mean ratios (GMR) by stage, with estimated BV-to-MV ratios (95% CI)."}
-include_graphics(c(file.path(figureDir, "D43_nAb-ID50Omicron-BA.4BA.5BVvsMVsummary.pdf"),
-                   file.path(figureDir, "D43_nAb-ID50ReferenceBVvsMVsummary.pdf"),
-                  file.path(figureDir, "AUC_nAb-ID50Omicron-BA.4BA.5BVvsMVsummary.pdf"),
-                   file.path(figureDir, "AUC_nAb-ID50ReferenceBVvsMVsummary.pdf"),
-                   file.path(figureDir, "rate_nAb-ID50Omicron-BA.4BA.5BVvsMVsummary.pdf"),
-                   file.path(figureDir, "rate_nAb-ID50ReferenceBVvsMVsummary.pdf")
-                   ))
-```
-\end{center}
-
-
-\begin{center}
-\vspace*{-2mm}
-```{r, out.width='45%', fig.cap="Estimated D43 GM antibody markers, durability [10 to the power of time- and population-averaged log10 antibody level from D43 to D202], and D202-to-D43 geometric mean ratios (GMR) by stage, with estimated BV-to-MV ratios (95% CI). "}
-include_graphics(c(file.path(figureDir, "D43_bAb-IgGSpikeOmicronBVvsMVsummary.pdf"),
-                   file.path(figureDir, "D43_bAb-IgGSpikeIndexBVvsMVsummary.pdf"),
-                  file.path(figureDir, "AUC_bAb-IgGSpikeOmicronBVvsMVsummary.pdf"),
-                   file.path(figureDir, "AUC_bAb-IgGSpikeIndexBVvsMVsummary.pdf"),
-                   file.path(figureDir, "rate_bAb-IgGSpikeOmicronBVvsMVsummary.pdf"),
-                   file.path(figureDir, "rate_bAb-IgGSpikeIndexBVvsMVsummary.pdf")
-                   ))
-```
-\end{center}
-
-
-
-\begin{center}
-\vspace*{-2mm}
-```{r, out.width='20%', fig.cap="Empirical geometric mean (GM) nAb-ID50 titers and fitted linear mixed models by treatment arm and trial stage for the Non-naïve groups in the nAb longitudinal analysis cohort. Points and bars represent the empirical GM and empirical 2.5% - 97.5% quantiles. Solid curves indicate point-wise GM of fitted responses that were based on fixed effects only. LOD: limit of detection."}
-include_graphics(c(file.path(figureDir, "stage1_nonnaivepseudoneutid50_BA.4.5_fitted.pdf"),
-                  file.path(figureDir, "stage1_nonnaivepseudoneutid50_fitted.pdf"),
-                   file.path(figureDir, "stage2_nonnaivepseudoneutid50_BA.4.5_fitted.pdf"),
-                  file.path(figureDir, "stage2_nonnaivepseudoneutid50_fitted.pdf")
-                   ))
-```
-\end{center}
-
-
-\begin{center}
-\vspace*{-2mm}
-```{r, out.width='20%', fig.cap="Empirical geometric mean (GM) bAb-IgG Spike concentrations and fitted linear mixed models by treatment arm and trial stage for the Non-naïve groups in the bAb longitudinal analysis cohort. Points and bars represent the empirical GM and empirical 2.5% - 97.5% quantiles of antibody levels at each longitudinal blood draw visit. Solid curves indicate point-wise GM of fitted responses that were based on fixed effects only. LLOQ: lower limit of quantitation. "}
-
-include_graphics(c(file.path(figureDir, "stage1_nonnaivebindSpike_omicron_fitted.pdf"),
-                   file.path(figureDir, "stage1_nonnaivebindSpike_fitted.pdf"),
-                    file.path(figureDir, "stage2_nonnaivebindSpike_omicron_fitted.pdf"),
-                  file.path(figureDir, "stage2_nonnaivebindSpike_fitted.pdf")
-                  
-                   ))
-```
-\end{center}
+\clearpage
+## Figure 4
 
 
 
@@ -167,7 +145,20 @@ include_graphics(c(
 ```
 \end{center}
 
+\begin{center}
+\vspace*{-2mm}
+```{r, out.width='45%', fig.cap="Estimated D43 GM antibody markers, durability [10 to the power of time- and population-averaged log10 antibody level from D43 to D202], and D202-to-D43 geometric mean ratios (GMR) by stage, with estimated BV-to-MV ratios (95% CI)."}
+include_graphics(c(file.path(figureDir, "D43_nAb-ID50Omicron-BA.4BA.5BVvsMVsummary.pdf"),
+                   file.path(figureDir, "D43_nAb-ID50ReferenceBVvsMVsummary.pdf"),
+                  file.path(figureDir, "AUC_nAb-ID50Omicron-BA.4BA.5BVvsMVsummary.pdf"),
+                   file.path(figureDir, "AUC_nAb-ID50ReferenceBVvsMVsummary.pdf"),
+                   file.path(figureDir, "rate_nAb-ID50Omicron-BA.4BA.5BVvsMVsummary.pdf"),
+                   file.path(figureDir, "rate_nAb-ID50ReferenceBVvsMVsummary.pdf")
+                   ))
+```
+\end{center}
 
+## Figure 5
 \begin{center}
 \vspace*{-2mm}
 ```{r, out.width='20%', fig.cap="Empirical geometric mean (GM) bAb-IgG Spike concentrations among Non-naïve participants and Naïve participants and fitted linear mixed models by trial stage and Naïve/Non-naïve status in the longitudinal analysis cohorts. Points and bars represent the empirical GM and empirical 2.5% - 97.5% quantiles of antibody levels at each longitudinal blood draw visit. Solid curves indicate point-wise GM of fitted responses that were based on fixed effects only. LLOQ: lower limit of quantitation. "}
@@ -179,9 +170,35 @@ include_graphics(c(file.path(figureDir, "nonnaivebindSpike_omicron_fitted.pdf"),
                    ))
 ```
 \end{center}
+
+\begin{center}
+\vspace*{-2mm}
+```{r, out.width='45%', fig.cap="Estimated D43 GM antibody markers, durability [10 to the power of time- and population-averaged log10 antibody level from D43 to D202], and D202-to-D43 geometric mean ratios (GMR) by stage, with estimated BV-to-MV ratios (95% CI). "}
+include_graphics(c(file.path(figureDir, "D43_bAb-IgGSpikeOmicronBVvsMVsummary.pdf"),
+                   file.path(figureDir, "D43_bAb-IgGSpikeIndexBVvsMVsummary.pdf"),
+                  file.path(figureDir, "AUC_bAb-IgGSpikeOmicronBVvsMVsummary.pdf"),
+                   file.path(figureDir, "AUC_bAb-IgGSpikeIndexBVvsMVsummary.pdf"),
+                   file.path(figureDir, "rate_bAb-IgGSpikeOmicronBVvsMVsummary.pdf"),
+                   file.path(figureDir, "rate_bAb-IgGSpikeIndexBVvsMVsummary.pdf")
+                   ))
+```
+\end{center}
+
+
+
+
+
+
+
+
+
+
+
+
+
 \clearpage
 
-
+## Table 1
 ```{r , results='asis'}
 results0 <- read.csv(file.path(outputDir, "naiveVsnonnaive_mainMarkers.csv"))
 results <- results0[, 1:5]
