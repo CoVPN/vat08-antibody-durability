@@ -42,8 +42,8 @@ R
 # d) source R files
 R 
     source(file.path(repoDir, "code/desc/descFig.R"))
-    source(file.path(repoDir, "code/LMMmodeling/confidenceInt.R"))
-    source(file.path(repoDir, "code/LMMmodeling/permutation_test.R"))
+    source(file.path(repoDir, "code/LMMmodeling/confidenceInt.R")) # 35 cores were used for parallel computing in this call; to set a different number of cores, modify `registerDoParallel(35)`
+    source(file.path(repoDir, "code/LMMmodeling/permutation_test.R")) # 35 cores were used for parallel computing in this call; to set a different number of cores, modify `registerDoParallel(35)`
     source(file.path(repoDir, "code/LMMmodeling/FittedTrajectoryPlot.R"))
     source(file.path(repoDir, "code/summary/summary.R"))
     
