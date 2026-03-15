@@ -14,7 +14,9 @@ separately by stage, treatment arm, and Naïve vs. Non-naïve status.
 
 **Statistical report**: vat08_antibody_durability_ms.pdf
 
-To reproduce this report, follow the following instructions:
+- Data were extracted from page 2.
+
+- To reproduce this report, follow the following instructions:
 
 ```bash
 
@@ -59,8 +61,8 @@ Estimated D43 GM nAb-ID50 titers, durability, and D202-to-D43 geometric mean rat
 
 **Statistical report**: vat08_antibody_durability_ms.pdf
 
-Steps for reproducing the report are the same as those outlined for Figure 1.
 
+- Data were extracted from page 3 and 4.
 
 ### Figure 3
 Empirical geometric mean (GM) bAb-IgG Spike concentrations against Omicron and against the Index strain and fitted linear mixed models by treatment arm and stage for the Non-naïve groups in the bAb longitudinal analysis cohort.
@@ -68,7 +70,7 @@ Estimated D43 GM bAb-IgG Spike concentrations, durability, and D202-to-D43 geome
 
 **Statistical report**: vat08_antibody_durability_ms.pdf
 
-Steps for reproducing the report are the same as those outlined for Figure 1.
+- Data were extracted from page 5 and 6.
 
 ### Figure 4
 Empirical geometric mean (GM) nAb-ID50 titers among Non-naive participants and Naive participants and fitted linear mixed models by Naive/Non-naive status and stage in the nAb longitudinal analysis cohort.
@@ -76,7 +78,7 @@ Estimated D43 GM nAb-ID50 titers, durability, and D202-to-D43 geometric mean rat
 
 **Statistical report**: vat08_antibody_durability_ms.pdf
 
-Steps for reproducing the report are the same as those outlined for Figure 1.
+- Data were extracted from page 7 and 8.
 
 ### Figure 5
 Empirical geometric mean (GM) bAb-IgG Spike concentrations among Non-naive participants and Naive participants and fitted linear mixed models by Naive/Non-naive status and stage in the bAb longitudinal analysis cohort.
@@ -84,7 +86,7 @@ Estimated D43 GM bAb-IgG Spike concentrations, durability, and D202-to-D43 geome
 
 **Statistical report**: vat08_antibody_durability_ms.pdf
 
-Steps for reproducing the report are the same as those outlined for Figure 1.
+- Data were extracted from page 9 and 10.
 
 
 ### Table 1
@@ -92,6 +94,6 @@ Comparisons of estimated geometric mean (GM) D43 antibody marker levels, durabil
 
 **Statistical report**: vat08_antibody_durability_ms.pdf
 
-Steps for reproducing the report are the same as those outlined for Figure 1.
+- Data were extracted from page 11.
 
 
