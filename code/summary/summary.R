@@ -214,17 +214,17 @@ output$groupB <- laply(output$Comparison, function(x)strsplit(x, split = " vs. "
 
 #Figures 2, 3
 comparisons <- c("1-V-NN vs. 1-P-NN", "2-V-NN vs. 2-P-NN")
-plotSummary_D43(comparisons, labels.x = c("Non-naïve MV", "Stage 1 Non-\nnaïve Placebo", "Non-naïve BV", "Stage 2 Non-\nnaïve Placebo"), figureLabel = "VvsP")
-plotSummary_AUC(comparisons, labels.x = c("Non-naïve MV", "Stage 1 Non-\nnaïve Placebo", "Non-naïve BV", "Stage 2 Non-\nnaïve Placebo"), figureLabel = "VvsP")
-plotSummary_GMR(comparisons, labels.x = c("Non-naïve MV", "Stage 1 Non-\nnaïve Placebo", "Non-naïve BV", "Stage 2 Non-\nnaïve Placebo"), figureLabel = "VvsP")
+plotSummary_D43(output, comparisons, labels.x = c("Non-naïve MV", "Stage 1 Non-\nnaïve Placebo", "Non-naïve BV", "Stage 2 Non-\nnaïve Placebo"), figureLabel = "VvsP")
+plotSummary_AUC(output, comparisons, labels.x = c("Non-naïve MV", "Stage 1 Non-\nnaïve Placebo", "Non-naïve BV", "Stage 2 Non-\nnaïve Placebo"), figureLabel = "VvsP")
+plotSummary_GMR(output, comparisons, labels.x = c("Non-naïve MV", "Stage 1 Non-\nnaïve Placebo", "Non-naïve BV", "Stage 2 Non-\nnaïve Placebo"), figureLabel = "VvsP")
 
 #Figures 4, 5
 comparisons <- c("2-V-NN vs. 1-V-NN", "2-V-N vs. 1-V-N")
-plotSummary_D43(comparisons, labels.x = c("Non-naïve MV","Non-naïve BV",  "Naïve MV", "Naïve BV"), figureLabel = "BVvsMV",
+plotSummary_D43(output, comparisons, labels.x = c("Non-naïve MV","Non-naïve BV",  "Naïve MV", "Naïve BV"), figureLabel = "BVvsMV",
                 IgG_ylim = c(3.5, 6.5), ID50_ylim = c(0.8, 5.1), reverseGroup = TRUE)
-plotSummary_AUC(comparisons, labels.x = c("Non-naïve MV","Non-naïve BV",  "Naïve MV", "Naïve BV"), figureLabel = "BVvsMV",
+plotSummary_AUC(output, comparisons, labels.x = c("Non-naïve MV","Non-naïve BV",  "Naïve MV", "Naïve BV"), figureLabel = "BVvsMV",
                 IgG_ylim = c(3.5, 6), ID50_ylim = c(0.8, 4.6), reverseGroup = TRUE)
-plotSummary_GMR(comparisons, labels.x = c("Non-naïve MV","Non-naïve BV",  "Naïve MV", "Naïve BV"), figureLabel = "BVvsMV",
+plotSummary_GMR(output, comparisons, labels.x = c("Non-naïve MV","Non-naïve BV",  "Naïve MV", "Naïve BV"), figureLabel = "BVvsMV",
                 IgG_ylim = c(0, 0.6), ID50_ylim = c(-0.05, 1.03), reverseGroup = TRUE)
 
 

@@ -1,80 +1,97 @@
-## Longitudinal analysis in the VAT00008 Trial
-*R* code implementing the data analyses used to generated figures and tables in the manuscript Li et al., 
-Durability of Neutralizing and Anti-Spike Binding IgG Antibody Responses to Monovalent (D614) and Bivalent 
-(D614 + B.1.351) AS03-Adjuvanted SARS-CoV-2 Recombinant Protein Vaccines.
+## Summary of sharing of data and code for Li et al., "Durability of Neutralizing and Anti-Spike Binding IgG Antibody Responses to Monovalent (D614) and Bivalent (D614 + B.1.351) AS03-Adjuvanted SARS-CoV-2 Recombinant Protein Vaccines."
+
+**Li Li**
+
+**March 14, 2026**
+
+- All analyses are based on the analysis-ready data files `vat08_combined_data_processed_longitudinal_bAb.csv` and `vat08_combined_data_processed_longitudinal_nAb.csv`.
+- A single statistical report includes all the main figures and tables. A copy of the statistical report is on the SCHARP network drive `T:\covpn\p3005\analysis\antibody_durability`
 
 
-### 1. System Requirements
+### Figure 1
+nAb-ID50 titers against Omicron BA.4/BA.5 and bAb-IgG Spike concentrations against Omicron before detected SARS-CoV-2 infection in the nAb and bAb longitudinal analysis cohorts, 
+separately by stage, treatment arm, and Naïve vs. Non-naïve status. 
 
-  Unless otherwise specified, software was tested on macOS Sequoia 15.6.1 running R version 4.4.3.
-  
-  Main programs as well as specific R packages and R files required by each program are listed below.
+**Statistical report**: vat08_antibody_durability_ms.pdf
 
-* `code/desc/descFig.R`: generates antibody trajectory plots before and after SARS-CoV-2 infections 
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + common.R 
-    + descFigUtils.R
-     
-* `code/LMMmodeling/confidenceInt.R`: computes bootstrap confidence intervals for Day 43 Geometric mean, durability, and D202-to-D43 Geometric mean ratio, as 
-well as ratios of these metrics for comparisons such as vaccine vs. placebo, Nonnaive vs. naive, Stage 2 vs. Stage 1.
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + lme4 1.1-37
-    + doParallel 1.0.17
-    + doRNG 1.8.6.1
-    + common.R
-    + utils.R
+To reproduce this report, follow the following instructions:
+
+```bash
+
+# a) download the zip file that contains the code from https://github.com/CoVPN/vat08-antibody-durability
+
+# b) install R packages 
+# Assume that R 4.4.3 and R package `remotes` have been installed
+
+R
+    remotes::install_version("tidyverse", version = "2.0.0")
+    remotes::install_version("plyr", version = "1.8.9")
+    remotes::install_version("lme4", version = "1.1-37")
+    remotes::install_version("doParallel", version = "1.0.17")
+    remotes::install_version("doRNG", version = "1.8.6.1")
+    remotes::install_version("ggplot2", version = "3.5.2")
+    remotes::install_version("scales", version = "1.4.0")
+
+# c) set the directory
+R
+   setwd("~/vat08-antibody-durability-master")
+   repoDir <- here::here()
+   
+# d) source R files
+R 
+    source(file.path(repoDir, "code/desc/descFig.R"))
+    source(file.path(repoDir, "code/LMMmodeling/confidenceInt.R"))
+    source(file.path(repoDir, "code/LMMmodeling/permutation_test.R"))
+    source(file.path(repoDir, "code/LMMmodeling/FittedTrajectoryPlot.R"))
+    source(file.path(repoDir, "code/summary/summary.R"))
     
-    
-* `code/LMMmodeling/permutation_test.R`: computes p-values from permutation tests for comparing D43 Geometric means, durability, and D202-to-D43 Geometric mean ratios
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + lme4 1.1-37
-    + doParallel 1.0.17
-    + doRNG 1.8.6.1
-    + common.R
-    + utils.R
+# e) generate report pdf
 
-    
-* `code/LMMmodeling/FittedTrajectoryPlot.R`: generate plots for empirical geometric mean (GM) antibody markers and point-wise GM of fitted responses
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + lme4 1.1-37
-    + ggplot2 3.5.2
-    + scales 1.4.0
-    + common.R
-    + utils.R
+R
+    rmarkdown::render(file.path(repoDir, "code/vat08_antibody_durability_ms.Rmd"), 
+    output_file = file.path(repoDir, "code/vat08_antibody_durability_ms.pdf"), quiet=TRUE)
 
-* `code/summary/summary.R`: generate plots and tables that summarize the results of the bootstrap confidence intervals and permutation tests
-    + tidyverse 2.0.0 
-    + plyr 1.8.9 
-    + ggplot2 3.5.2
-    + common.R
-    + summaryUtils.R
+```
 
-*  `code/MainFiguresTables.Rmd`: compile main tables and figures in a pdf   
+### Figure 2
+Empirical geometric mean (GM) nAb-ID50 titers against BA.4/5 and against Reference and fitted linear mixed models by treatment arm and stage for the Non-naïve groups in the nAb longitudinal analysis cohort.
+Estimated D43 GM nAb-ID50 titers, durability, and D202-to-D43 geometric mean ratios (GMR) by treatment arm, with estimated vaccine-to-placebo ratios (95% CI).
 
-### 2. Installation Guide
-  
-* Install required version of *R*.  
-* Install required *R* packages.  
-* Clone this repository.
-  
-### 3. User Instructions
-  Input datasets include `vat08_combined_data_processed_longitudinal_bAb.csv`, `vat08_combined_data_processed_longitudinal_nAb.csv`. 
-  Place both datasets in the `data` subfolder within the cloned repository. 
-  
-  Create a new R project for the cloned repository. From the command line, starting in the `code` directory, run the following commands. 
-  Each code file should complete in under 10 minutes except for `code/LMMmodeling/confidenceInt.R` and 
-  `code/LMMmodeling/permutation_test.R` which may take a few hours, depending on the number of nodes used for parallel computation.
-  All output are saved as either figures (`.pdf` files in the `figures` directory) or tables (`.csv` files in the `tables` directory).
-    
-    R CMD BATCH desc/descFig.R &
-    R CMD BATCH LMMmodeling/confidenceInt.R &
-    R CMD BATCH LMMmodeling/permutation_test.R &
-    R CMD BATCH LMMmodeling/FittedTrajectoryPlot.R &
-    R CMD BATCH summary/summary.R 
-    R CMD BATCH MainFiguresTables.Rmd
-    
-    
+**Statistical report**: vat08_antibody_durability_ms.pdf
+
+Steps for reproducing the report are the same as those outlined for Figure 1.
+
+
+### Figure 3
+Empirical geometric mean (GM) bAb-IgG Spike concentrations against Omicron and against the Index strain and fitted linear mixed models by treatment arm and stage for the Non-naïve groups in the bAb longitudinal analysis cohort.
+Estimated D43 GM bAb-IgG Spike concentrations, durability, and D202-to-D43 geometric mean ratios (GMR) by treatment arm, with estimated vaccine-to-placebo ratios (95% CI).
+
+**Statistical report**: vat08_antibody_durability_ms.pdf
+
+Steps for reproducing the report are the same as those outlined for Figure 1.
+
+### Figure 4
+Empirical geometric mean (GM) nAb-ID50 titers among Non-naive participants and Naive participants and fitted linear mixed models by Naive/Non-naive status and stage in the nAb longitudinal analysis cohort.
+Estimated D43 GM nAb-ID50 titers, durability, and D202-to-D43 geometric mean ratios (GMR), with estimated BV-to-MV ratios (95% CI).
+
+**Statistical report**: vat08_antibody_durability_ms.pdf
+
+Steps for reproducing the report are the same as those outlined for Figure 1.
+
+### Figure 5
+Empirical geometric mean (GM) bAb-IgG Spike concentrations among Non-naive participants and Naive participants and fitted linear mixed models by Naive/Non-naive status and stage in the bAb longitudinal analysis cohort.
+Estimated D43 GM bAb-IgG Spike concentrations, durability, and D202-to-D43 geometric mean ratios (GMR), with estimated BV-to-MV ratios (95% CI).
+
+**Statistical report**: vat08_antibody_durability_ms.pdf
+
+Steps for reproducing the report are the same as those outlined for Figure 1.
+
+
+### Table 1
+Comparisons of estimated geometric mean (GM) D43 antibody marker levels, durability, and D202-to-D43 geometric mean ratio (GMR)s between the Non-naïve vaccine and Naïve vaccine recipients in the nAb and bAb longitudinal analysis cohorts.
+
+**Statistical report**: vat08_antibody_durability_ms.pdf
+
+Steps for reproducing the report are the same as those outlined for Figure 1.
+
+

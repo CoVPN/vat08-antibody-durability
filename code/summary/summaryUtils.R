@@ -22,9 +22,8 @@ reformatRatio <- function(x){
   return(paste0(est, " (", ll, ", ", ul, ")", sep = ""))
 }
 
-plotSummary_D43 <- function(comparisons, labels.x = c("Monovalent\nVaccine", "Stage 1\nPlacebo", "Bivalent\nVaccine", "Stage 2\nPlacebo"), figureLabel,
+plotSummary_D43 <- function(output, comparisons, labels.x = c("Monovalent\nVaccine", "Stage 1\nPlacebo", "Bivalent\nVaccine", "Stage 2\nPlacebo"), figureLabel,
                             IgG_ylim = c(2.1, 6.5), ID50_ylim = c(0.6, 5.1), reverseGroup = FALSE){
- 
   for(markeri in c("bAb-IgG Spike Omicron", "bAb-IgG Spike Index", "nAb-ID50 Omicron-BA.4/BA.5",
                    "nAb-ID50 Reference")){
     if(markeri %in% c("bAb-IgG Spike Omicron", "bAb-IgG Spike Index")){
@@ -136,7 +135,7 @@ plotSummary_D43 <- function(comparisons, labels.x = c("Monovalent\nVaccine", "St
   }
 }
 
-plotSummary_AUC <- function(comparisons, labels.x = c("Monovalent\nVaccine", "Stage 1\nPlacebo", "Bivalent\nVaccine", "Stage 2\nPlacebo"), figureLabel,
+plotSummary_AUC <- function(output, comparisons, labels.x = c("Monovalent\nVaccine", "Stage 1\nPlacebo", "Bivalent\nVaccine", "Stage 2\nPlacebo"), figureLabel,
                             IgG_ylim = c(2.1, 6.5), ID50_ylim = c(0.6, 5.1), reverseGroup = FALSE){
   #browser()
   for(markeri in c("bAb-IgG Spike Omicron", "bAb-IgG Spike Index", "nAb-ID50 Omicron-BA.4/BA.5",
@@ -254,7 +253,7 @@ plotSummary_AUC <- function(comparisons, labels.x = c("Monovalent\nVaccine", "St
 }
 
 
-plotSummary_GMR <- function(comparisons, labels.x = c("Monovalent\nVaccine", "Stage 1\nPlacebo", "Bivalent\nVaccine", "Stage 2\nPlacebo"), figureLabel,
+plotSummary_GMR <- function(output, comparisons, labels.x = c("Monovalent\nVaccine", "Stage 1\nPlacebo", "Bivalent\nVaccine", "Stage 2\nPlacebo"), figureLabel,
                             IgG_ylim = c(0, 1.2), ID50_ylim = c(0, 1.2), reverseGroup = FALSE){
   
   for(markeri in c("bAb-IgG Spike Omicron", "bAb-IgG Spike Index", "nAb-ID50 Omicron-BA.4/BA.5",
